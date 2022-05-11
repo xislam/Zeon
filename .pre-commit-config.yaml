@@ -36,7 +36,7 @@ repos:
     # - id: pretty-format-json
     #  args: ['--no-sort-keys']
     - id: check-added-large-files
-      args: ['--maxkb=500']
+      args: ['--maxkb=2000']
     - id: no-commit-to-branch
       args: [--branch, staging]
 
