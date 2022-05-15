@@ -4,6 +4,7 @@ from django.contrib import admin
 
 from news.models import News
 
+
 # Register your models here.
 
 
@@ -20,3 +21,4 @@ class NewsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(News, NewsAdmin)
+admin.site.site_header = "ZEON IT HUB"
