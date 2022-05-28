@@ -21,6 +21,6 @@ class NewsViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = News.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = NewsSerializer(user)
+        news = get_object_or_404(queryset, pk=pk)
+        serializer = NewsSerializer(news)
         return Response(serializer.data)
