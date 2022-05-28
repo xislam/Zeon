@@ -30,4 +30,4 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filter_fields = ["name", "shop_price"]
     filter_class = CareerFilter
-    search_fields = ["name"]
+    search_fields = ["name", "direction", ""]
