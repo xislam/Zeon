@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from career.models import Career
 from career.models import Country
+from career.models import CV
 from career.models import Direction
 
 
@@ -39,3 +40,9 @@ class CareerListSerializer(serializers.ModelSerializer):
             "direction",
             "country",
         )
+
+
+class CvSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CV
+        fields = "__all__"

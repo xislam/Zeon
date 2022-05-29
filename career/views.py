@@ -3,13 +3,16 @@ from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import mixins
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from career.filter import CareerFilter
 from career.models import Career
 from career.seriakizers import CareerListSerializer
 from career.seriakizers import CareerSerializer
+from career.seriakizers import CvSerializer
 
 
 class CareerViewSet(viewsets.ViewSet):
@@ -38,3 +41,12 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         "relocation",
         "direction__name",
     ]
+
+
+class CareerCvCreate(viewsets.ViewSet):
+    def create(self, request, format=None):
+        serializer = CvSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
