@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     "drf_yasg2",
+    "phonenumber_field",
     "career",
     "news",
     "quiz",
