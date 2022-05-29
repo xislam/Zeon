@@ -82,14 +82,21 @@ WSGI_APPLICATION = "root.wsgi.application"
 
 DATABASES = {
     "default": {
-        "HOST": "localhost",
-        "PORT": "3306",
-        "NAME": "project_db",
-        "USER": "zeon",
-        "PASSWORD": "mentor.b",
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "HOST": "localhost",
+#         "PORT": "3306",
+#         "NAME": "project_db",
+#         "USER": "zeon",
+#         "PASSWORD": "mentor.b",
+#         "ENGINE": "django.db.backends.mysql",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -285,9 +292,6 @@ CKEDITOR_CONFIGS = {
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
-    ),
 }
 
 SWAGGER_SETTINGS = {

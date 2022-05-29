@@ -26,7 +26,10 @@ class Career(models.Model):
     )
     name = models.CharField(max_length=125, verbose_name=_("Vacancy name"))
     country = models.ForeignKey(
-        Country, verbose_name=_("Country"), on_delete=models.CASCADE
+        Country,
+        verbose_name=_("Country"),
+        on_delete=models.CASCADE,
+        related_name="country",
     )
     short_description = models.TextField(verbose_name=_("Short description"))
     description = RichTextField(verbose_name=_("Description"))
