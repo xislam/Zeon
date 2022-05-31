@@ -79,23 +79,23 @@ WSGI_APPLICATION = "root.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
-    }
-}
-
 # DATABASES = {
 #     "default": {
-#         "HOST": "localhost",
-#         "PORT": "3306",
-#         "NAME": "project_db",
-#         "USER": "zeon",
-#         "PASSWORD": "mentor.b",
-#         "ENGINE": "django.db.backends.mysql",
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
 #     }
 # }
+
+DATABASES = {
+    "default": {
+        "HOST": "localhost",
+        "PORT": "3306",
+        "NAME": "project_db",
+        "USER": "zeon",
+        "PASSWORD": "mentor.b",
+        "ENGINE": "django.db.backends.mysql",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -135,7 +135,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "http://192.168.31.147:8000/media/"
+MEDIA_URL = "media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
