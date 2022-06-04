@@ -8,13 +8,14 @@ from rest_framework.response import Response
 
 from career.filter import CareerFilter
 from career.models import Career
+from career.seriakizers import CareerListSerializer
 from career.seriakizers import CareerSerializer
 
 
 class CareerViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = Career.objects.all()
-        serializer = CareerSerializer(queryset, many=True)
+        serializer = CareerListSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
@@ -35,5 +36,5 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         "remote",
         "office",
         "relocation",
-        "direction",
+        "direction__name",
     ]
