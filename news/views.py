@@ -19,13 +19,15 @@ class NewsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = News.objects.all()
-        serializer = NewsSerializer(queryset.order_by("-id"), many=True)
+        serializer = NewsSerializer(
+            queryset.order_by("-id"), many=True, context={"request": request}
+        )
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         queryset = News.objects.all()
         news = get_object_or_404(queryset, pk=pk)
-        serializer = NewSerializer(news)
+        serializer = NewSerializer(news, context={"request": request})
         return Response(serializer.data)
 
 
