@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-qby_!hkuqftu%1g17q10xdma4#m$qsblu+o((xfjy8p$@oc0(q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["217.25.90.28", "127.0.0.1"]
 
 # Application definition
 
@@ -88,14 +88,21 @@ WSGI_APPLICATION = "root.wsgi.application"
 
 DATABASES = {
     "default": {
-        "HOST": "localhost",
-        "PORT": "3306",
-        "NAME": "project_db",
-        "USER": "zeon",
-        "PASSWORD": "mentor.b",
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "HOST": "localhost",
+#         "PORT": "3306",
+#         "NAME": "project_db",
+#         "USER": "zeon",
+#         "PASSWORD": "mentor.b",
+#         "ENGINE": "django.db.backends.mysql",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
