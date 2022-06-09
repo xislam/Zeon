@@ -23,6 +23,8 @@ media
 
 # C extensions
 *.so
+.idea/misc.xml
+.idea/zeon_quzi.iml
 
 # Distribution / packaging
 .Python
