@@ -58,4 +58,11 @@ class CareerSerializer(serializers.ModelSerializer):
 class CvSerializer(serializers.ModelSerializer):
     class Meta:
         model = CV
-        fields = "__all__"
+        fields = (
+            "career",
+            "name",
+            "surname",
+            "phone_number",
+            "email",
+            "cv_file",
+        )

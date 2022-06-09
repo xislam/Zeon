@@ -7,9 +7,11 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from career.filter import CareerFilter
 from career.models import Career
+from career.models import CV
 from career.seriakizers import CareerListSerializer
 from career.seriakizers import CareerSerializer
 from career.seriakizers import CvSerializer
@@ -43,10 +45,18 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     ]
 
 
-class CareerCvCreate(viewsets.ViewSet):
-    def create(self, request, format=None):
-        serializer = CvSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class CareerCvCreate(viewsets.ViewSet):
+#     def create(self, request, format=None):
+#         serializer = CvSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CareerCvCreate(ModelViewSet):
+    queryset = CV.objects.all()
+    serializer_class = CvSerializer
+
+    def pre_save(self, obj):
+        obj.cv_file = self.request.FILES.get("file")
