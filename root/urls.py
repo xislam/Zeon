@@ -41,6 +41,7 @@ urlpatterns = [
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path("api/", include("news.urls")),
     path("api/", include("career.urls")),
+    path("api/", include("feedback.urls")),
     path("quiz/", include("quiz.urls", namespace="quiz")),
 ]
 
