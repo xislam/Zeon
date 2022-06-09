@@ -6,12 +6,6 @@ from career.models import CV
 from career.models import Direction
 
 
-class CareerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Career
-        fields = "__all__"
-
-
 class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direction
@@ -34,6 +28,25 @@ class CareerListSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "short_description",
+            "remote",
+            "office",
+            "relocation",
+            "direction",
+            "country",
+        )
+
+
+class CareerSerializer(serializers.ModelSerializer):
+    country = CountrySerializer(read_only=True)
+    direction = DirectionSerializer(read_only=True)
+
+    class Meta:
+        model = Career
+        fields = (
+            "id",
+            "name",
+            "short_description",
+            "description",
             "remote",
             "office",
             "relocation",
