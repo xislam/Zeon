@@ -60,3 +60,12 @@ class CareerCvCreate(ModelViewSet):
 
     def pre_save(self, obj):
         obj.cv_file = self.request.FILES.get("file")
+
+
+class NewCareer(viewsets.ViewSet):
+    """New Career 3 pieces"""
+
+    def list(self, request):
+        queryset = Career.objects.all().order_by("-id")[:3]
+        serializer = CareerSerializer(queryset, many=True)
+        return Response(serializer.data)
