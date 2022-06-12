@@ -1,12 +1,9 @@
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import mixins
-from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from career.filter import CareerFilter
@@ -34,7 +31,13 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Career.objects.all()
     serializer_class = CareerSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filter_fields = ["name", "shop_price"]
+    filter_fields = [
+        "name",
+        "remote",
+        "office",
+        "relocation",
+        "direction__name",
+    ]
     filter_class = CareerFilter
     search_fields = [
         "name",
@@ -42,6 +45,7 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         "office",
         "relocation",
         "direction__name",
+        "country__name",
     ]
 
 
