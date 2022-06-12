@@ -8,10 +8,14 @@ from rest_framework.viewsets import ModelViewSet
 
 from career.filter import CareerFilter
 from career.models import Career
+from career.models import Country
 from career.models import CV
+from career.models import Direction
 from career.seriakizers import CareerListSerializer
 from career.seriakizers import CareerSerializer
+from career.seriakizers import CountryListSerializer
 from career.seriakizers import CvSerializer
+from career.seriakizers import DirectionListSerializer
 
 
 class CareerViewSet(viewsets.ViewSet):
@@ -72,4 +76,18 @@ class NewCareer(viewsets.ViewSet):
     def list(self, request):
         queryset = Career.objects.all().order_by("-id")[:3]
         serializer = CareerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class DirectionListViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Direction.objects.all()
+        serializer = DirectionListSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class CountryListViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Country.objects.all()
+        serializer = CountryListSerializer(queryset, many=True)
         return Response(serializer.data)
