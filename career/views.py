@@ -40,6 +40,7 @@ class CareerListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         "office",
         "relocation",
         "direction__name",
+        "country__name",
     ]
 
 
