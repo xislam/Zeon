@@ -72,6 +72,9 @@ class Question(Updated):
     difficulty = models.IntegerField(
         choices=SCALE, default=0, verbose_name=_("Difficulty")
     )
+    img = models.ImageField(
+        verbose_name="Question img", upload_to="q_img", null=True, blank=True
+    )
     date_created = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Date Created")
     )
