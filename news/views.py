@@ -3,7 +3,9 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
+from feedback.serializers import FeedbackSerializer
 from news.models import News
 from news.serializers import NewSerializer
 from news.serializers import NewsSerializer
@@ -12,23 +14,9 @@ from news.serializers import NewsSerializer
 # Create your views here.
 
 
-class NewsViewSet(viewsets.ViewSet):
-    """
-    A news ViewSet for listing or retrieving users.
-    """
-
-    def list(self, request):
-        queryset = News.objects.all()
-        serializer = NewsSerializer(
-            queryset.order_by("-id"), many=True, context={"request": request}
-        )
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = News.objects.all()
-        news = get_object_or_404(queryset, pk=pk)
-        serializer = NewSerializer(news, context={"request": request})
-        return Response(serializer.data)
+class NewsModelViewSet(ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
 
 
 class NewNews(viewsets.ViewSet):
