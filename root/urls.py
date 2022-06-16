@@ -45,6 +45,7 @@ urlpatterns = [
     path("api/", include("career.urls")),
     path("api/", include("feedback.urls")),
     path("quiz/", include("quiz.urls", namespace="quiz")),
+    path("api_2/", include("partner_site.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

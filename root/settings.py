@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "news",
     "quiz",
     "feedback",
+    "partner_site",
 ]
 
 MIDDLEWARE = [
@@ -141,9 +142,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "root/static")]
+STATIC_URL = "/static_2/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static_2")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "root/static_2")]
 # STATIC_ROOT = "/var/www/example.com/static/"
 
 # Media files
