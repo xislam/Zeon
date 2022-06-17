@@ -6,6 +6,7 @@ from partner_site.models import Direction
 from partner_site.models import PartnerCV
 from partner_site.models import QuestionCV
 from partner_site.models import SocialNetwork
+from partner_site.models import Status
 
 
 @admin.register(SocialNetwork)
@@ -15,17 +16,26 @@ class SocialNetworkInlineModel(admin.ModelAdmin):
 
 @admin.register(ContactUs)
 class ContactUsAdmin(admin.ModelAdmin):
-    fields = ["name", "email", "social_network", "social_network_text", "phone_number"]
+    fields = [
+        "name",
+        "email",
+        "social_network",
+        "social_network_text",
+        "phone_number",
+        "status",
+    ]
     list_display = [
         "name",
         "email",
         "social_network",
         "social_network_text",
         "phone_number",
+        "status",
     ]
+    list_filter = ["status"]
 
 
-@admin.register(QuestionCV, Answer, Direction)
+@admin.register(QuestionCV, Answer, Direction, Status)
 class PersonAdmin(admin.ModelAdmin):
     pass
 
@@ -40,6 +50,7 @@ class SocialNetworkInlineModel(admin.ModelAdmin):
         "answer",
         "countries",
         "file_cv",
+        "status",
     ]
     list_display = [
         "full_name",
@@ -49,4 +60,6 @@ class SocialNetworkInlineModel(admin.ModelAdmin):
         "answer",
         "countries",
         "file_cv",
+        "status",
     ]
+    list_filter = ["status"]
