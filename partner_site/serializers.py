@@ -17,7 +17,13 @@ class SocialNetworkSerializer(serializers.ModelSerializer):
 class ContactUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactUs
-        fields = "__all__"
+        fields = (
+            "name",
+            "email",
+            "social_network",
+            "social_network_text",
+            "phone_number",
+        )
 
 
 class DirectionsSerializer(serializers.ModelSerializer):
@@ -41,4 +47,4 @@ class QuestionCVSerializer(serializers.ModelSerializer):
 class PartnerCVSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PartnerCV
-        fields = "__all__"
+        fields = ("full_name", "email", "direction", "question", "answer", "countries")
