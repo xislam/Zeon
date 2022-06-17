@@ -18,6 +18,11 @@ class QuizAdmin(admin.ModelAdmin):
     ]
 
 
+class AnswerInWritingInlineModel(admin.TabularInline):
+    model = models.AnswerInWriting
+    fields = ["answer_writing"]
+
+
 class AnswerInlineModel(admin.TabularInline):
     model = models.Answer
     fields = ["answer_text", "is_right"]
@@ -25,14 +30,8 @@ class AnswerInlineModel(admin.TabularInline):
 
 @admin.register(models.Question)
 class QuestionAdmin(admin.ModelAdmin):
-    fields = [
-        "title",
-        "quiz",
-    ]
     list_display = ["title", "quiz", "date_updated"]
-    inlines = [
-        AnswerInlineModel,
-    ]
+    inlines = [AnswerInlineModel, AnswerInWritingInlineModel]
 
 
 @admin.register(models.Answer)

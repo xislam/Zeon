@@ -9,6 +9,13 @@ class Category(models.Model):
         return self.name
 
 
+class Topic(models.Model):
+    name = models.CharField(max_length=125, verbose_name=_("Name Topic"))
+
+    def __str__(self):
+        return self.name
+
+
 class Quizzes(models.Model):
     class Meta:
         verbose_name = _("Quiz")
@@ -18,6 +25,10 @@ class Quizzes(models.Model):
     title = models.CharField(
         max_length=255, default=_("New Quiz"), verbose_name=_("Quiz Title")
     )
+    topic = models.ForeignKey(
+        Topic, verbose_name=_("Topic"), on_delete=models.DO_NOTHING
+    )
+    short_description = models.TextField(verbose_name=_("Short description"))
     category = models.ForeignKey(Category, default=1, on_delete=models.DO_NOTHING)
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -46,7 +57,10 @@ class Question(Updated):
         (4, _("Expert")),
     )
 
-    TYPE = ((0, _("Multiple Choice")),)
+    TYPE = (
+        (0, _("Multiple Choice")),
+        (1, _("One Choice")),
+    )
 
     quiz = models.ForeignKey(
         Quizzes, related_name="question", on_delete=models.DO_NOTHING
@@ -57,6 +71,9 @@ class Question(Updated):
     title = models.CharField(max_length=255, verbose_name=_("Title"))
     difficulty = models.IntegerField(
         choices=SCALE, default=0, verbose_name=_("Difficulty")
+    )
+    img = models.ImageField(
+        verbose_name="Question img", upload_to="q_img", null=True, blank=True
     )
     date_created = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Date Created")
@@ -78,6 +95,19 @@ class Answer(Updated):
     )
     answer_text = models.CharField(max_length=255, verbose_name=_("Answer Text"))
     is_right = models.BooleanField(default=False)
+    participant_response = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return self.answer_text
+
+
+class AnswerInWriting(models.Model):
+    question = models.ForeignKey(
+        Question, related_name="answer_writing", on_delete=models.DO_NOTHING
+    )
+    answer_writing = models.CharField(max_length=255, verbose_name=_("Answer Text"))
+
+    class Meta:
+        verbose_name = _("Answer In Writing")
+        verbose_name_plural = _("Answer In Writing")
+        ordering = ["id"]
