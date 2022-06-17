@@ -12,7 +12,7 @@ router.register(
 router.register(r"direction/list", views.DirectionList, basename="Direction")
 router.register(r"question_cv/list", views.QuestionCVList, basename="QuestionCVList")
 router.register(r"answer/list", views.AnswerList, basename="AnswerList")
-router.register(r"cv/create", views.PartnerCVCreate, basename="PartnerCV")
+router.register(r"cv_create", views.PartnerCVCreate, basename="PartnerCV")
 
 app_name = "partner_site"
 

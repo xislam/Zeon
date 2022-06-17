@@ -58,8 +58,8 @@ class Direction(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Direction Partner"
-        verbose_name_plural = "Direction Partner"
+        verbose_name = "Direction Developer"
+        verbose_name_plural = "Direction Developer"
 
 
 class QuestionCV(models.Model):
@@ -69,8 +69,8 @@ class QuestionCV(models.Model):
         return self.question
 
     class Meta:
-        verbose_name = "Question CV Partner"
-        verbose_name_plural = "Question CV Partner"
+        verbose_name = "Question CV Developer"
+        verbose_name_plural = "Question CV Developer"
 
 
 class Answer(models.Model):
@@ -80,8 +80,8 @@ class Answer(models.Model):
         return self.answer
 
     class Meta:
-        verbose_name = "Answer Partner"
-        verbose_name_plural = "Answer Partner"
+        verbose_name = "Answer Developer"
+        verbose_name_plural = "Answer Developer"
 
 
 class CVStatus(models.Model):
@@ -91,8 +91,8 @@ class CVStatus(models.Model):
         return self.status_name
 
     class Meta:
-        verbose_name = "CV Status Partner"
-        verbose_name_plural = "CV Status Partner"
+        verbose_name = "CV Status Developer"
+        verbose_name_plural = "CV Status Developer"
 
 
 class PartnerCV(models.Model):
@@ -115,5 +115,5 @@ class PartnerCV(models.Model):
         return self.full_name
 
     class Meta:
-        verbose_name = "Partner CV"
-        verbose_name_plural = "Partner CV"
+        verbose_name = "Developer CV"
+        verbose_name_plural = "Developer CV"
