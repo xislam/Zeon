@@ -65,7 +65,7 @@ class CV(models.Model):
     surname = models.CharField(max_length=125, verbose_name=_("Surname"))
     phone_number = PhoneNumberField(verbose_name=_("Phone number"))
     email = models.EmailField(verbose_name=_("Email"))
-    cv_file = models.FileField(verbose_name=_("Summary CV"), upload_to="CV_file")
+    cv_file = models.FileField(verbose_name=_("Summary PartnerCV"), upload_to="CV_file")
     date_create = models.DateTimeField(
         verbose_name=_("Date"), auto_now_add=True, null=True, blank=True
     )

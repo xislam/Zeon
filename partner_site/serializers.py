@@ -2,38 +2,43 @@ from rest_framework import serializers
 
 from partner_site.models import Answer
 from partner_site.models import ContactUs
-from partner_site.models import CV
 from partner_site.models import Direction
+from partner_site.models import PartnerCV
+from partner_site.models import QuestionCV
 from partner_site.models import SocialNetwork
 
 
-class SocialNetworkSerializer(serializers.HyperlinkedModelSerializer):
+class SocialNetworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialNetwork
         fields = "__all__"
 
 
-class ContactUsSerializer(serializers.HyperlinkedModelSerializer):
-    social_network = SocialNetworkSerializer(read_only=True)
-
+class ContactUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactUs
         fields = "__all__"
 
 
-class DirectionSerializer(serializers.HyperlinkedModelSerializer):
+class DirectionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direction
         fields = "__all__"
 
 
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = "__all__"
 
 
-class CVSerializer(serializers.HyperlinkedModelSerializer):
+class QuestionCVSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CV
+        model = QuestionCV
+        fields = "__all__"
+
+
+class PartnerCVSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = PartnerCV
         fields = "__all__"
