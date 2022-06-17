@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "news",
     "quiz",
     "feedback",
+    "partner_site",
 ]
 
 MIDDLEWARE = [
