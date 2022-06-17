@@ -5,7 +5,7 @@ from rest_framework import routers
 from partner_site import views
 
 router = routers.DefaultRouter()
-router.register(r"contact_us/", views.ContactUsCreate, basename="ContactUs")
+router.register(r"contact_us", views.ContactUsCreate, basename="ContactUs")
 router.register(
     r"social_network/list", views.SocialNetworkList, basename="SocialNetwork"
 )
