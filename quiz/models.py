@@ -25,9 +25,7 @@ class Quizzes(models.Model):
     title = models.CharField(
         max_length=255, default=_("New Quiz"), verbose_name=_("Quiz Title")
     )
-    topic = models.ForeignKey(
-        Topic, verbose_name=_("Topic"), on_delete=models.DO_NOTHING
-    )
+    topic = models.ManyToManyField(Topic, verbose_name=_("Topic"))
     short_description = models.TextField(verbose_name=_("Short description"))
     category = models.ForeignKey(Category, default=1, on_delete=models.DO_NOTHING)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -69,6 +67,7 @@ class Question(Updated):
         choices=TYPE, default=0, verbose_name=_("Type of Question")
     )
     title = models.CharField(max_length=255, verbose_name=_("Title"))
+    time = models.TimeField()
     difficulty = models.IntegerField(
         choices=SCALE, default=0, verbose_name=_("Difficulty")
     )
