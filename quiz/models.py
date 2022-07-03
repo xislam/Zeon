@@ -67,7 +67,7 @@ class Question(Updated):
         choices=TYPE, default=0, verbose_name=_("Type of Question")
     )
     title = models.CharField(max_length=255, verbose_name=_("Title"))
-    time = models.TimeField()
+    time = models.TimeField(default="00:02:00")
     difficulty = models.IntegerField(
         choices=SCALE, default=0, verbose_name=_("Difficulty")
     )
@@ -77,6 +77,7 @@ class Question(Updated):
     date_created = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Date Created")
     )
+    ball = models.IntegerField(verbose_name=_("ball"))
     is_active = models.BooleanField(default=False, verbose_name=_("Active Status"))
 
     def __str__(self):
@@ -94,6 +95,7 @@ class Answer(Updated):
     )
     answer_text = models.CharField(max_length=255, verbose_name=_("Answer Text"))
     is_right = models.BooleanField(default=False)
+    customer_response = models.BooleanField(default=False)
     participant_response = models.BooleanField(default=False, null=True)
 
     def __str__(self):
