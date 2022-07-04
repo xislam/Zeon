@@ -1,6 +1,14 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+
+admin.site.unregister(User)
 
 from . import models
+
+
+@admin.register(models.Topic)
+class TopicAdmin(admin.ModelAdmin):
+    fields = ("name",)
 
 
 @admin.register(models.Category)
@@ -10,35 +18,33 @@ class CatAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(models.Quizzes)
+class OptionInline(admin.StackedInline):
+    model = models.Option
+    fields = "text", "is_correct"
+
+
+@admin.register(models.Question)
+class QuestionAdmin(admin.ModelAdmin):
+    fields = (
+        "quiz",
+        "title",
+        "max_point",
+        "type",
+    )
+
+    inlines = (OptionInline,)
+
+
+@admin.register(models.Quiz)
 class QuizAdmin(admin.ModelAdmin):
+    fields = "title", "topics", "short_description"
+
     list_display = [
         "id",
         "title",
     ]
 
 
-class AnswerInWritingInlineModel(admin.TabularInline):
-    model = models.AnswerInWriting
-    fields = ["answer_writing"]
-
-
-class AnswerInlineModel(admin.TabularInline):
-    model = models.Answer
-    fields = ["answer_text", "is_right"]
-
-
-@admin.register(models.Question)
-class QuestionAdmin(admin.ModelAdmin):
-    list_display = ["title", "quiz", "date_updated"]
-    inlines = [AnswerInlineModel, AnswerInWritingInlineModel]
-
-
-@admin.register(models.Answer)
-class AnswerAdmin(admin.ModelAdmin):
-    list_display = ["answer_text", "is_right", "question"]
-
-
-@admin.register(models.Topic)
-class TopicAdmin(admin.ModelAdmin):
-    list_display = ["name"]
+@admin.register(models.User)
+class UserAdmin(admin.ModelAdmin):
+    pass
