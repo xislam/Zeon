@@ -1,13 +1,21 @@
 from django.urls import path
+from django.urls import re_path
 
-from .views import Quiz
-from .views import QuizQuestion
-from .views import RandomQuestion
+from quiz.views import *
 
 app_name = "quiz"
 
 urlpatterns = [
-    path("", Quiz.as_view(), name="quiz"),
-    path("r/<str:topic>/", RandomQuestion.as_view(), name="random"),
-    path("q/<str:topic>/", QuizQuestion.as_view(), name="questions"),
+    path("my-quizzes/", UserQuizList.as_view(), name="my_quiz_list"),
+    path("save-answers/", SaveUserAnswers.as_view(), name="save_answers"),
+    re_path(
+        r"quiz/(?P<slug>[\w\-]+)/submit/$", SubmitQuiz.as_view(), name="submit_quiz"
+    ),
+    path("quizzes/", QuizList.as_view(), name="quiz_list"),
+    re_path(r"quiz/(?P<slug>[\w\-]+)/$", QuizDetails.as_view(), name="quiz_details"),
+    path("users/register/", RegistrationView.as_view(), name="register"),
+    path("users/login/", LoginView.as_view(), name="login"),
+    path("user/", UserRetrieveUpdateView.as_view(), name="user"),
+    path("rest-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
+    path("rest-auth/google/", GoogleLogin.as_view(), name="google_login"),
 ]

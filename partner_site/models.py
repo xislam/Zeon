@@ -73,7 +73,7 @@ class QuestionCV(models.Model):
         verbose_name_plural = "Question CV Developer"
 
 
-class Answer(models.Model):
+class PartnerAnswer(models.Model):
     answer = models.CharField(max_length=300, verbose_name=_("Answer"))
 
     def __str__(self):

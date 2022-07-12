@@ -22,6 +22,8 @@ from django.urls import re_path
 from django.views.static import serve
 from drf_yasg2 import openapi
 from drf_yasg2.views import get_schema_view
+from rest_framework import permissions
+from rest_framework_simplejwt import views as jwt_views
 
 from root import settings
 
@@ -31,9 +33,11 @@ schema_view = get_schema_view(
         default_version="v1",
     ),
     public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("admin/", admin.site.urls),
     re_path(
         r"^swagger/$",
@@ -46,11 +50,13 @@ urlpatterns = [
     path("api/", include("feedback.urls")),
     path("quiz/", include("quiz.urls", namespace="quiz")),
     path("api_2/", include("partner_site.urls")),
+    path("token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += i18n_patterns(path("admin/", admin.site.urls))
+urlpatterns += i18n_patterns()
 if settings.DEBUG:
     urlpatterns += [
         re_path(
