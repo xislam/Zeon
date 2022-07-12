@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from partner_site.models import Answer
 from partner_site.models import ContactUs
 from partner_site.models import Direction
+from partner_site.models import PartnerAnswer
 from partner_site.models import PartnerCV
 from partner_site.models import QuestionCV
 from partner_site.models import SocialNetwork
@@ -35,7 +35,7 @@ class ContactUsAdmin(admin.ModelAdmin):
     list_filter = ["status"]
 
 
-@admin.register(QuestionCV, Answer, Direction, Status)
+@admin.register(QuestionCV, PartnerAnswer, Direction, Status)
 class PersonAdmin(admin.ModelAdmin):
     pass
 

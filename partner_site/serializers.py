@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from partner_site.models import Answer
 from partner_site.models import ContactUs
 from partner_site.models import Direction
+from partner_site.models import PartnerAnswer
 from partner_site.models import PartnerCV
 from partner_site.models import QuestionCV
 from partner_site.models import SocialNetwork
@@ -32,9 +32,9 @@ class DirectionsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AnswerSerializer(serializers.ModelSerializer):
+class PartnerAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Answer
+        model = PartnerAnswer
         fields = "__all__"
 
 

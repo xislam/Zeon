@@ -1,113 +1,96 @@
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from django.utils.translation import gettext as _
+
+from .manager import UserManager
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=255)
+class User(AbstractBaseUser, PermissionsMixin):
+    name = models.CharField(_("Name"), max_length=100)
+    email = models.EmailField(_("Email"), unique=True)
+    username = models.CharField(_("Username"), max_length=100, unique=True)
+    password = models.CharField(_("Password"), max_length=255)
+    is_staff = models.BooleanField(_("Is staff"), default=False)
+    is_superadmin = models.BooleanField(_("Is super admin"), default=False)
+    otp = models.CharField(_("OTP"), max_length=6, null=True, blank=True)
+    is_active = models.BooleanField(_("Is active"), default=True)
+    created_at = models.DateTimeField(_("Create at"), default=timezone.now)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    objects = UserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["name", "username"]
+
+    def __str__(self):
+        return self.email
+
+
+class Quiz(models.Model):
+    name = models.CharField(_("Name"), max_length=300)
+    description = models.CharField(_("Descriptions"), max_length=300)
+    image = models.ImageField(_("Image"), upload_to="Quiz_img")
+    slug = models.SlugField(_("Slug"), max_length=50, blank=True)
+    roll_out = models.BooleanField(_("Roll out"), default=False)
+    timestamp = models.DateTimeField(_("Time stamp"), auto_now_add=True)
+
+    class Meta:
+        ordering = [
+            "timestamp",
+        ]
+        verbose_name_plural = "Quizzes"
 
     def __str__(self):
         return self.name
 
 
-class Topic(models.Model):
-    name = models.CharField(max_length=125, verbose_name=_("Name Topic"))
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, verbose_name=_("Quiz"), on_delete=models.CASCADE)
+    label = models.CharField(_("Label"), max_length=300)
+    img = models.ImageField(verbose_name="question_img", upload_to="question_img")
+    order = models.IntegerField(_("Order"), default=0)
 
     def __str__(self):
-        return self.name
+        return self.label
 
 
-class Quizzes(models.Model):
-    class Meta:
-        verbose_name = _("Quiz")
-        verbose_name_plural = _("Quizzes")
-        ordering = ["id"]
-
-    title = models.CharField(
-        max_length=255, default=_("New Quiz"), verbose_name=_("Quiz Title")
-    )
-    topic = models.ForeignKey(
-        Topic, verbose_name=_("Topic"), on_delete=models.DO_NOTHING
-    )
-    short_description = models.TextField(verbose_name=_("Short description"))
-    category = models.ForeignKey(Category, default=1, on_delete=models.DO_NOTHING)
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
-
-class Updated(models.Model):
-    date_updated = models.DateTimeField(verbose_name=_("Last Updated"), auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class Question(Updated):
-    class Meta:
-        verbose_name = _("Question")
-        verbose_name_plural = _("Questions")
-        ordering = ["id"]
-
-    SCALE = (
-        (0, _("Fundamental")),
-        (1, _("Beginner")),
-        (2, _("Intermediate")),
-        (3, _("Advanced")),
-        (4, _("Expert")),
-    )
-
-    TYPE = (
-        (0, _("Multiple Choice")),
-        (1, _("One Choice")),
-    )
-
-    quiz = models.ForeignKey(
-        Quizzes, related_name="question", on_delete=models.DO_NOTHING
-    )
-    technique = models.IntegerField(
-        choices=TYPE, default=0, verbose_name=_("Type of Question")
-    )
-    title = models.CharField(max_length=255, verbose_name=_("Title"))
-    difficulty = models.IntegerField(
-        choices=SCALE, default=0, verbose_name=_("Difficulty")
-    )
-    img = models.ImageField(
-        verbose_name="Question img", upload_to="q_img", null=True, blank=True
-    )
-    date_created = models.DateTimeField(
-        auto_now_add=True, verbose_name=_("Date Created")
-    )
-    is_active = models.BooleanField(default=False, verbose_name=_("Active Status"))
-
-    def __str__(self):
-        return self.title
-
-
-class Answer(Updated):
-    class Meta:
-        verbose_name = _("Answer")
-        verbose_name_plural = _("Answers")
-        ordering = ["id"]
-
+class Answer(models.Model):
     question = models.ForeignKey(
-        Question, related_name="answer", on_delete=models.DO_NOTHING
+        Question, verbose_name=_("Question"), on_delete=models.CASCADE
     )
-    answer_text = models.CharField(max_length=255, verbose_name=_("Answer Text"))
-    is_right = models.BooleanField(default=False)
-    participant_response = models.BooleanField(default=False, null=True)
+    label = models.CharField(_("Label"), max_length=100)
+    is_correct = models.BooleanField(_("is correct"), default=False)
 
     def __str__(self):
-        return self.answer_text
+        return self.label
 
 
-class AnswerInWriting(models.Model):
-    question = models.ForeignKey(
-        Question, related_name="answer_writing", on_delete=models.DO_NOTHING
+class QuizTaker(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE
     )
-    answer_writing = models.CharField(max_length=255, verbose_name=_("Answer Text"))
+    quiz = models.ForeignKey(Quiz, verbose_name=_("Quiz"), on_delete=models.CASCADE)
+    score = models.IntegerField(_("Score"), default=0)
+    completed = models.BooleanField(_("Completed"), default=False)
+    timestamp = models.DateTimeField(_("Time stamp"), auto_now_add=True)
+    date_completed = models.DateTimeField(_("Date_completed"), default=None, null=True)
 
-    class Meta:
-        verbose_name = _("Answer In Writing")
-        verbose_name_plural = _("Answer In Writing")
-        ordering = ["id"]
+    def __str__(self):
+        return self.user.email
+
+
+class UsersAnswer(models.Model):
+    quiz_taker = models.ForeignKey(
+        QuizTaker, verbose_name=_("Quiz taker"), on_delete=models.CASCADE
+    )
+    question = models.ForeignKey(
+        Question, verbose_name=_("Question"), on_delete=models.CASCADE
+    )
+    answer = models.ForeignKey(
+        Answer, verbose_name=_("Answer"), on_delete=models.CASCADE, null=True
+    )
+
+    def __str__(self):
+        return self.question.label

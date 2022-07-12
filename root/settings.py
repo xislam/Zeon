@@ -39,11 +39,22 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework_swagger",
     "rest_framework",
+    "rest_framework_simplejwt",
     "corsheaders",
     "ckeditor",
     "ckeditor_uploader",
     "drf_yasg2",
     "phonenumber_field",
+    "rest_framework.authtoken",
+    "rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "rest_auth.registration",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.google",
+    "nested_admin",
     "career",
     "news",
     "quiz",
@@ -141,7 +152,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+AUTH_USER_MODEL = "quiz.User"
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "root/static")]
@@ -306,13 +317,21 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "EXCEPTION_HANDLER": "quiz.core.exceptions.core_exception_handler",
+    "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.IsAdminUser",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
-        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
+        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
 }
 
 JAZZMIN_SETTINGS = {
@@ -461,3 +480,17 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+SITE_ID = 1
+
+LOGIN_URL = "rest_framework:login"
+LOGOUT_URL = "rest_framework:logout"
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = "zeon.web.test@gmail.com"
+EMAIL_HOST_PASSWORD = "ybub rffn urzl kjxb"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
