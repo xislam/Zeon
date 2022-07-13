@@ -9,9 +9,11 @@ from .manager import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    name = models.CharField(_("Name"), max_length=100)
+    name = models.CharField(_("Name"), max_length=100, null=True, blank=True)
     email = models.EmailField(_("Email"), unique=True)
-    username = models.CharField(_("Username"), max_length=100, unique=True)
+    username = models.CharField(
+        _("Username"), max_length=100, unique=True, null=True, blank=True
+    )
     password = models.CharField(_("Password"), max_length=255)
     is_staff = models.BooleanField(_("Is staff"), default=False)
     is_superadmin = models.BooleanField(_("Is super admin"), default=False)

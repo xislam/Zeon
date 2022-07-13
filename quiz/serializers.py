@@ -97,7 +97,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["name", "email", "username", "password", "token"]
+        fields = ["email", "password", "token"]
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField()
 
 
 class LoginSerializer(serializers.Serializer):

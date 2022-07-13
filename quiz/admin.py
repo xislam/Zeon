@@ -43,13 +43,13 @@ class UserAdmin(UserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     model = User
-    list_display = ("username", "email", "name", "is_active")
+    list_display = ("email", "is_active")
     fieldsets = (
-        (None, {"fields": ("name", "username", "email", "password")}),
+        (None, {"fields": ("email", "password", "otp")}),
         ("Permissions", {"fields": ("is_staff", "is_active")}),
     )
-    search_fields = ("username",)
-    ordering = ("username",)
+    search_fields = ("email",)
+    ordering = ("email",)
 
 
 admin.site.register(Quiz, QuizAdmin)

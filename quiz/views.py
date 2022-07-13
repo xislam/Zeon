@@ -12,7 +12,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAdminUser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from .email import send_otp_via_email
 from .models import Answer
 from .models import Question
 from .models import Quiz
@@ -27,6 +29,7 @@ from .serializers import ResultsSerializer
 from .serializers import UserQuizSerializer
 from .serializers import UsersAnswerSerializer
 from .serializers import UserSerializer
+from .serializers import VerifyEmailSerializer
 
 
 class UserQuizList(generics.ListAPIView):
@@ -38,7 +41,7 @@ class UserQuizList(generics.ListAPIView):
         return queryset
 
 
-class QuizList(generics.ListAPIView):
+class QuizList(generics.ListAPIView, generics.GenericAPIView):
     """Returns All Quizzez Available"""
 
     serializer_class = QuizSerializer
@@ -52,7 +55,7 @@ class QuizList(generics.ListAPIView):
         return queryset
 
 
-class QuizDetails(generics.RetrieveAPIView):
+class QuizDetails(generics.RetrieveAPIView, generics.GenericAPIView):
     """Returns details for specified quiz"""
 
     serializer_class = QuizDetailsSerializer
@@ -156,21 +159,70 @@ class RegistrationView(generics.GenericAPIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
 
-        name = user.get("name", "")
         email = user.get("email", "")
-        username = user.get("username", "")
         password = user.get("password", "")
 
         users = get_user_model().objects.create(
-            name=name,
             email=email,
-            username=username,
             password=password,
         )
         users.set_password(password)
         users.save()
+        send_otp_via_email(email)
 
         return Response({"data": serializer.data, "status": status.HTTP_201_CREATED})
+
+
+class VerifyOPT(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
+    serializer_class = VerifyEmailSerializer
+
+    def post(self, request):
+        try:
+            data = request.data
+            serializer = VerifyEmailSerializer(data=data)
+
+            if serializer.is_valid(raise_exception=True):
+                email = serializer.data["email"]
+                otp = serializer.data["otp"]
+                user = User.objects.filter(email=email)
+                if not user.exists():
+                    return Response(
+                        {
+                            "status": 400,
+                            "message": "something went wrong",
+                            "data": "invaild email",
+                        }
+                    )
+                if user[0].otp != otp:
+                    return Response(
+                        {
+                            "status": 400,
+                            "massage": "something went wrong",
+                            "data": "wrong otp",
+                        }
+                    )
+                user.first().is_verified = True
+                user[0].save()
+
+                return Response(
+                    {
+                        "status": 200,
+                        "massage": "email verified",
+                        "data": serializer.data,
+                    }
+                )
+            return Response(
+                {
+                    "status": 400,
+                    "massage": "something went wrong",
+                    "data": serializer.data,
+                }
+            )
+
+        except Exception as e:
+            print(e)
 
 
 class LoginView(generics.GenericAPIView):

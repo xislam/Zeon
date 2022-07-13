@@ -14,6 +14,7 @@ urlpatterns = [
     path("quizzes/", QuizList.as_view(), name="quiz_list"),
     re_path(r"quiz/(?P<slug>[\w\-]+)/$", QuizDetails.as_view(), name="quiz_details"),
     path("users/register/", RegistrationView.as_view(), name="register"),
+    path("verify/email/", VerifyOPT.as_view()),
     path("users/login/", LoginView.as_view(), name="login"),
     path("user/", UserRetrieveUpdateView.as_view(), name="user"),
     path("rest-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
