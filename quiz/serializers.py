@@ -2,7 +2,14 @@ from rest_framework import serializers as srz
 from rest_framework.exceptions import ValidationError
 
 from . import models
+from .models import User
 from .models.quiz import Type
+
+
+class RegistrationSerializer(srz.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email"]
 
 
 class TopicSerializer(srz.ModelSerializer):
