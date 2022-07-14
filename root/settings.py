@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "news",
     "quiz",
     "feedback",
-    "quiz_answers",
 ]
 
 MIDDLEWARE = [
@@ -470,3 +469,6 @@ EMAIL_HOST_USER = "zeon.web.test@gmail.com"
 EMAIL_HOST_PASSWORD = "ybub rffn urzl kjxb"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+AUTH_USER_MODEL = "quiz.User"
+SESSION_COOKIE_SECURE = True

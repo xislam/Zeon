@@ -44,7 +44,6 @@ urlpatterns = [
     path("api/", include("news.urls")),
     path("api/", include("career.urls")),
     path("api/", include("feedback.urls")),
-    path("api/", include("quiz_answers.urls")),
     path("quiz/", include("quiz.urls", namespace="quiz")),
 ]
 

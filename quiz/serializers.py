@@ -6,6 +6,11 @@ from .models import User
 from .models.quiz import Type
 
 
+class VerifyEmailSerializer(srz.Serializer):
+    email = srz.EmailField()
+    otp = srz.CharField()
+
+
 class RegistrationSerializer(srz.ModelSerializer):
     class Meta:
         model = User

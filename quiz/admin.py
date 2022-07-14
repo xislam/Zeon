@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-admin.site.unregister(User)
-
 from . import models
 
 
@@ -45,6 +43,7 @@ class QuizAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(models.User)
-class UserAdmin(admin.ModelAdmin):
-    pass
+#
+# @admin.register(models.User)
+# class UserAdmin(admin.ModelAdmin):
+#     pass
