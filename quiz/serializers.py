@@ -1,201 +1,88 @@
-from django.conf import settings
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import update_last_login
-from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
+from rest_framework import serializers as srz
+from rest_framework.exceptions import ValidationError
 
-from .models import Answer
-from .models import Question
-from .models import Quiz
-from .models import QuizTaker
-from .models import User
-from .models import UsersAnswer
+from . import models
+from .models.quiz import Type
 
 
-class QuizSerializer(serializers.ModelSerializer):
-    questions_count = serializers.SerializerMethodField()
-
+class TopicSerializer(srz.ModelSerializer):
     class Meta:
-        model = Quiz
-        fields = ["id", "name", "description", "slug", "image", "questions_count"]
-
-    def get_questions_count(self, obj):
-        return obj.question_set.all().count()
+        model = models.Topic
+        fields = ["name"]
 
 
-class AnswerSerializer(serializers.ModelSerializer):
+class OptionSerializer(srz.ModelSerializer):
     class Meta:
-        model = Answer
-        fields = "__all__"
-
-
-class QuestionSerializer(serializers.ModelSerializer):
-    answer_set = AnswerSerializer(many=True)
-
-    class Meta:
-        model = Question
-        fields = "__all__"
-
-
-class UsersAnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UsersAnswer
-        fields = "__all__"
-
-
-class QuizTakerSerializer(serializers.ModelSerializer):
-    usersanswer_set = UsersAnswerSerializer(many=True)
-
-    class Meta:
-        model = QuizTaker
-        fields = "__all__"
-
-
-class QuizDetailsSerializer(serializers.ModelSerializer):
-    quiztaker_set = serializers.SerializerMethodField()
-    question_set = QuestionSerializer(many=True)
-
-    class Meta:
-        model = Quiz
-        fields = "__all__"
-
-    def get_quiztaker_set(self, obj):
-        try:
-            quiz_taker = QuizTaker.objects.get(
-                user=self.context["request"].user, quiz=obj
-            )
-            serializer = QuizTakerSerializer(quiz_taker)
-            return serializer.data
-        except QuizTaker.DoesNotExist:
-            return None
-
-
-class ResultsSerializer(serializers.ModelSerializer):
-    quiztaker_set = serializers.SerializerMethodField()
-    question_set = QuestionSerializer(many=True)
-
-    class Meta:
-        model = Quiz
-        fields = "__all__"
-
-    def get_quiztaker_set(self, obj):
-        try:
-            quiztaker = QuizTaker.objects.get(
-                user=self.context["request"].user, quiz=obj
-            )
-            serializer = QuizTakerSerializer(quiztaker)
-            return serializer.data
-
-        except QuizTaker.DoesNotExist:
-            return None
-
-
-class RegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(min_length=8, max_length=128, write_only=True)
-    token = serializers.CharField(read_only=True, max_length=255)
-
-    class Meta:
-        model = User
-        fields = ["name", "email", "username", "password", "token"]
-
-
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
-    password = serializers.CharField(max_length=128, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
-
-    def validate(self, data):
-        email = data.get("email", None)
-        password = data.get("password", None)
-        user = authenticate(username=email, password=password)
-
-        if email is None or password is None:
-            raise serializers.ValidationError(
-                "Email Address and Password are required to login"
-            )
-        if not user:
-            raise serializers.ValidationError(
-                "User with this email and password combination was not found"
-            )
-        if not user.is_active:
-            raise serializers.ValidationError("User is inactive")
-
-        try:
-
-            update_last_login(None, user)
-        except User.DoesNotExist:
-            raise serializers.ValidationError(
-                "User with given email and password does not exists"
-            )
-
-        return {
-            "email": user.email,
-        }
-
-
-class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(min_length=8, max_length=128, write_only=True)
-
-    class Meta:
-        model = User
-        fields = ["email", "username", "name", "password"]
-
-
-class UserQuizSerializer(serializers.ModelSerializer):
-    questions_count = serializers.SerializerMethodField()
-    completed = serializers.SerializerMethodField()
-    score = serializers.SerializerMethodField()
-    progress = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Quiz
+        model = models.Option
         fields = [
             "id",
-            "name",
-            "description",
-            "slug",
-            "image",
-            "questions_count",
-            "completed",
-            "score",
-            "progress",
+            "text",
         ]
-        read_only_fields = ["questions_count", "completed", "score", "progress"]
 
-    def get_questions_count(self, obj):
-        return obj.question_set.all().count()
 
-    def get_completed(self, obj):
-        try:
-            quiztaker = QuizTaker.objects.get(
-                user=self.context["request"].user, quiz=obj
-            )
-            return quiztaker.completed
-        except QuizTaker.DoesNotExist:
-            return None
+class QuestionSerializer(srz.ModelSerializer):
+    options = OptionSerializer(many=True)
 
-    def get_score(self, obj):
-        try:
-            quiztaker = QuizTaker.objects.get(
-                user=self.context["request"].user, quiz=obj
-            )
-            if quiztaker.completed:
-                return quiztaker.score
-        except QuizTaker.DoesNotExist:
-            return None
+    class Meta:
+        model = models.Question
+        fields = [
+            "id",
+            "time",
+            "title",
+            "img",
+            "type",
+            "options",
+        ]
 
-    def get_progress(self, obj):
-        try:
-            quiztaker = QuizTaker.objects.get(
-                user=self.context["request"].user, quiz=obj
-            )
-            if not quiztaker.completed:
-                answered = UsersAnswer.objects.filter(
-                    quiz_taker=quiztaker, answer__isnull=False
-                ).count()
-                total_questions = obj.question_set.all().count()
-                return int(answered / total_questions) * 100
-            return None
-        except QuizTaker.DoesNotExist:
-            return None
+
+class QuizSerializer(srz.ModelSerializer):
+    topics = TopicSerializer(many=True)
+    questions = QuestionSerializer(many=True)
+
+    class Meta:
+        model = models.Quiz
+        fields = [
+            "id",
+            "title",
+            "topics",
+            "short_description",
+            "questions",
+        ]
+
+
+class ResponseCreateSerializer(srz.ModelSerializer):
+    class Meta:
+        model = models.Response
+        fields = ("id", "quiz", "user")
+
+
+class AnswerCreateSerializer(srz.ModelSerializer):
+    class Meta:
+        model = models.Answer
+        fields = ("id", "response", "question", "text", "options")
+        extra_kwargs = {
+            "options": {"required": False},
+        }
+
+    def validate(self, attrs):
+        question = attrs["question"]
+        if question.type == Type.TEXT:
+            if "text" not in attrs:
+                raise ValidationError(
+                    f"Text questions requires text answer",
+                )
+            if "options" in attrs:
+                raise ValidationError(
+                    "Text questions must not contain option answers",
+                )
+        if question.type == Type.SELECT:
+            if "text" in attrs:
+                raise ValidationError("Select question must not contain text answer")
+            if "options" not in attrs:
+                raise ValidationError("Select question must contain exactly one option")
+            if attrs["options"]:
+                pass
+        return attrs
+
+    def create(self, validated_data):
+        super().create(validated_data)
