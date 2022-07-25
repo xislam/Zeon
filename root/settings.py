@@ -40,20 +40,10 @@ INSTALLED_APPS = [
     "rest_framework_swagger",
     "rest_framework",
     "knox",
-    "corsheaders",
     "ckeditor",
     "ckeditor_uploader",
     "drf_yasg2",
     "phonenumber_field",
-    "rest_framework.authtoken",
-    "rest_auth",
-    "django.contrib.sites",
-    "allauth",
-    "allauth.account",
-    "rest_auth.registration",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.facebook",
-    "allauth.socialaccount.providers.google",
     "nested_admin",
     "career",
     "news",
@@ -153,7 +143,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-AUTH_USER_MODEL = "quiz.User"
+
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "root/static")]
@@ -324,9 +314,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
         "rest_framework.permissions.IsAdminUser",
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
 }
 
 SWAGGER_SETTINGS = {

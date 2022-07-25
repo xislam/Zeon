@@ -14,7 +14,7 @@ class UserAdmin(UserAdmin):
     list_filter = ("username", "name", "email", "is_active")
     fieldsets = (
         (None, {"fields": ("name", "username", "email", "password")}),
-        ("Permissions", {"fields": ("is_staff", "is_active")}),
+        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser")}),
     )
     search_fields = ("username",)
     ordering = ("username",)
