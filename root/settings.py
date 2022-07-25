@@ -308,12 +308,8 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    "EXCEPTION_HANDLER": "quiz.core.exceptions.core_exception_handler",
-    "NON_FIELD_ERRORS_KEY": "error",
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-        "rest_framework.permissions.IsAdminUser",
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
+    "UNICODE_JSON": False,
 }
 
 SWAGGER_SETTINGS = {
