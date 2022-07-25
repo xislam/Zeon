@@ -51,8 +51,6 @@ urlpatterns = [
     path("api/", include("feedback.urls")),
     path("quiz/", include("quiz.urls", namespace="quiz")),
     path("api_2/", include("partner_site.urls")),
-    path("token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
