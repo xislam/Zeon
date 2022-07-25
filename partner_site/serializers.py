@@ -47,4 +47,12 @@ class QuestionCVSerializer(serializers.ModelSerializer):
 class PartnerCVSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PartnerCV
-        fields = ("full_name", "email", "direction", "question", "answer", "countries")
+        fields = (
+            "full_name",
+            "email",
+            "direction",
+            "question",
+            "answer",
+            "countries",
+            "file_cv",
+        )
