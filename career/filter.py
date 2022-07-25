@@ -8,4 +8,4 @@ class CareerFilter(filters.FilterSet):
 
     class Meta:
         model = Career
-        fields = ["name", "remote", "office", "relocation", "direction"]
+        fields = ["name", "remote", "office", "relocation", "direction", "country"]

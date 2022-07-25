@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="CV",
+            name="PartnerCV",
             fields=[
                 (
                     "id",
@@ -126,7 +126,9 @@ class Migration(migrations.Migration):
                 ("email", models.EmailField(max_length=254, verbose_name="Email")),
                 (
                     "cv_file",
-                    models.FileField(upload_to="CV_file", verbose_name="Summary CV"),
+                    models.FileField(
+                        upload_to="CV_file", verbose_name="Summary PartnerCV"
+                    ),
                 ),
                 (
                     "date_create",

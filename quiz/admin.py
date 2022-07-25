@@ -41,9 +41,3 @@ class QuizAdmin(admin.ModelAdmin):
         "id",
         "title",
     ]
-
-
-#
-# @admin.register(models.User)
-# class UserAdmin(admin.ModelAdmin):
-#     pass

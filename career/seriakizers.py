@@ -66,3 +66,15 @@ class CvSerializer(serializers.ModelSerializer):
             "email",
             "cv_file",
         )
+
+
+class DirectionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Direction
+        fields = ("name",)
+
+
+class CountryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ("name",)
