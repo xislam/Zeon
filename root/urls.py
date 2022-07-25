@@ -41,6 +41,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("ckeditor/", include("ckeditor_uploader.urls")),
+    path("api/auth/", include("accounts.urls")),
     path("api/", include("news.urls")),
     path("api/", include("career.urls")),
     path("api/", include("feedback.urls")),

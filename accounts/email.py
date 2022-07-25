@@ -2,7 +2,7 @@ import random
 
 from django.core.mail import send_mail
 
-from quiz.models import User
+from accounts.models import User
 from root import settings
 
 

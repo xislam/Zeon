@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from root import settings
+
 
 class Weight(models.IntegerChoices):
     EASY = 1, _("easy")
@@ -89,7 +91,7 @@ class Option(models.Model):
 
 class Response(models.Model):
     quiz = models.ForeignKey("Quiz", models.CASCADE, "tests")
-    user = models.ForeignKey("User", models.CASCADE, "tests")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, "tests")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

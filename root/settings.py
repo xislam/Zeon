@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework_swagger",
     "rest_framework",
+    "knox",
     "corsheaders",
     "ckeditor",
     "ckeditor_uploader",
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "news",
     "quiz",
     "feedback",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -462,13 +464,13 @@ CORS_ALLOW_HEADERS = [
 ]
 
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_USE_SSL = True
 EMAIL_HOST_USER = "zeon.web.test@gmail.com"
-EMAIL_HOST_PASSWORD = "ybub rffn urzl kjxb"
-
+EMAIL_HOST_PASSWORD = "oozx ngmi tylt wqtg"
+d = "oozx ngmi tylt wqtg"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-AUTH_USER_MODEL = "quiz.User"
+AUTH_USER_MODEL = "accounts.User"
 SESSION_COOKIE_SECURE = True

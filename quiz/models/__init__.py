@@ -5,4 +5,3 @@ from .quiz import Question  # noqa: F401
 from .quiz import Quiz  # noqa: F401
 from .quiz import Response  # noqa: F401
 from .quiz import Topic  # noqa: F401
-from .users import User  # noqa: F401
