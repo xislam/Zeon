@@ -96,6 +96,7 @@ class CVStatus(models.Model):
 
 
 class PartnerCV(models.Model):
+
     full_name = models.CharField(max_length=125, verbose_name=_("Full Name"))
     email = models.EmailField(verbose_name=_("Email"))
     direction = models.CharField(max_length=125, verbose_name=_("Direction"))
