@@ -308,7 +308,10 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
+        "knox.auth.TokenAuthentication",
+    ),
     "UNICODE_JSON": False,
 }
 

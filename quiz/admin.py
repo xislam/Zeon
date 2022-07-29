@@ -41,3 +41,19 @@ class QuizAdmin(admin.ModelAdmin):
         "id",
         "title",
     ]
+
+
+@admin.register(models.Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    pass
+
+
+class AnswerInline(admin.StackedInline):
+    model = models.Answer
+    fields = ('question', 'text', 'options', 'point')
+    readonly_fields = ('question',)
+
+
+@admin.register(models.Response)
+class ResponseAdmin(admin.ModelAdmin):
+    inlines = (AnswerInline,)
