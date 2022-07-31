@@ -37,13 +37,14 @@ class QuestionSerializer(srz.ModelSerializer):
         ]
 
 
-class QuizSerializer(srz.ModelSerializer):
+class QuizSerializer(srz.HyperlinkedModelSerializer):
     topics = TopicSerializer(many=True)
     questions = QuestionSerializer(many=True)
 
     class Meta:
         model = models.Quiz
         fields = [
+            'url',
             'id',
             'title',
             'topics',

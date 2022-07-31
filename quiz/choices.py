@@ -10,6 +10,6 @@ class Difficulty(models.IntegerChoices):
 
 class Type(models.TextChoices):
     TEXT = 'text', _('text')
-    SELECT = 'select', _('select')
+    SINGLE_CHOICE = 'single_choice', _('single choice')
     MULTIPLE = 'multiple', _('multiple choice')
-    MULTIPLE_WITH_OWN_ANSWER = 'multiple_own', _('multiple with own answer')
+    MULTIPLE_WITH_OWN_ANSWER = 'multiple_with_own', _('multiple with own answer')
