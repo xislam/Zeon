@@ -10,15 +10,15 @@ from .models.quiz import Type
 class TopicSerializer(srz.ModelSerializer):
     class Meta:
         model = models.Topic
-        fields = ["name"]
+        fields = ['name']
 
 
 class OptionSerializer(srz.ModelSerializer):
     class Meta:
         model = models.Option
         fields = [
-            "id",
-            "text",
+            'id',
+            'text',
         ]
 
 
@@ -28,12 +28,12 @@ class QuestionSerializer(srz.ModelSerializer):
     class Meta:
         model = models.Question
         fields = [
-            "id",
-            "time",
-            "title",
-            "img",
-            "type",
-            "options",
+            'id',
+            'time',
+            'title',
+            'img',
+            'type',
+            'options',
         ]
 
 
@@ -44,11 +44,11 @@ class QuizSerializer(srz.ModelSerializer):
     class Meta:
         model = models.Quiz
         fields = [
-            "id",
-            "title",
-            "topics",
-            "short_description",
-            "questions",
+            'id',
+            'title',
+            'topics',
+            'short_description',
+            'questions',
         ]
 
 
@@ -78,18 +78,24 @@ class AnswerCreateSerializer(srz.ModelSerializer):
         }
 
     def validate(self, attrs):
-        question = attrs["question"]
+        response = attrs['response']
+        question = attrs['question']
         text = attrs.get('text', '')
         options = attrs.get('options', [])
+
+        if not response.quiz.questions.filter(id=question.id).exists():
+            raise ValidationError(
+                _('Quiz has not such a question'),
+            )
 
         if question.type == Type.TEXT:
             if not text:
                 raise ValidationError(
-                    f"Text questions requires text answer",
+                    f'Text questions requires text answer',
                 )
             if options:
                 raise ValidationError(
-                    "Text questions must not contain option answers",
+                    'Text questions must not contain option answers',
                 )
 
         if question.type == Type.SELECT:
@@ -105,7 +111,7 @@ class AnswerCreateSerializer(srz.ModelSerializer):
                 raise ValidationError(_('Answer must not contain text'))
             for option in options:
                 if option not in question.options.all():
-                    raise ValidationError(_('Some answers are not available options'))
+                    raise ValidationError(_('answer %s is not in options') % option.text)
 
         if question.type == Type.MULTIPLE_WITH_OWN_ANSWER:
             for option in options:
@@ -116,13 +122,13 @@ class AnswerCreateSerializer(srz.ModelSerializer):
 
     @atomic
     def create(self, validated_data):
-        response = validated_data["response"]
+        response = validated_data['response']
         question = validated_data['question']
 
         validated_data['point'] = self.get_point(validated_data)
         response.total_point += validated_data['point']
         if question.type in (
-            Type.TEXT,
+            Type.SELECT,
             Type.MULTIPLE,
         ):
             validated_data['is_checked'] = True
@@ -144,5 +150,7 @@ class AnswerCreateSerializer(srz.ModelSerializer):
             for option in options:
                 if option.is_correct:
                     result += point_per_correct_option
+                else:
+                    result -= point_per_correct_option
 
         return result

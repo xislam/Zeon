@@ -91,6 +91,13 @@ class Response(models.Model):
         return f'<Response for {self.quiz}> {self.id}'
 
 
+class UncheckedResponse(Response):
+    class Meta:
+        proxy = True
+        verbose_name = _('unchecked response')
+        verbose_name_plural = _('unchecked responses')
+
+
 class Answer(models.Model):
     response = models.ForeignKey('Response', models.CASCADE, 'answers')
     question = models.ForeignKey('Question', models.CASCADE, 'answers')
@@ -101,3 +108,10 @@ class Answer(models.Model):
 
     class Meta:
         unique_together = ('response', 'question')
+
+
+class UncheckedAnswer(Answer):
+    class Meta:
+        proxy = True
+        verbose_name = _('unchecked answer')
+        verbose_name_plural = _('unchecked answers')
