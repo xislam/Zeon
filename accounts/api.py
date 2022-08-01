@@ -37,7 +37,7 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         print(user.email)
-        # send_otp_via_email(user.email, user.otp)
+        send_otp_via_email(user.email, user.otp)
         return Response(
             {
                 "user": UserSerializer(user).data,
