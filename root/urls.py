@@ -25,6 +25,11 @@ from drf_yasg2.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt import views as jwt_views
 
+import accounts.urls
+import career.urls
+import feedback.urls
+import news.urls
+import quiz.urls
 from root import settings
 
 schema_view = get_schema_view(
@@ -49,9 +54,10 @@ urlpatterns = [
     path("api/", include("news.urls")),
     path("api/", include("career.urls")),
     path("api/", include("feedback.urls")),
-    path("quiz/", include("quiz.urls", namespace="quiz")),
     path("api_2/", include("partner_site.urls")),
 ]
+
+urlpatterns += quiz.urls.router.urls
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
