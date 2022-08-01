@@ -308,10 +308,7 @@ CKEDITOR_CONFIGS = {
 }
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.BasicAuthentication',
-        "knox.auth.TokenAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
     "UNICODE_JSON": False,
 }
 
@@ -374,7 +371,7 @@ JAZZMIN_SETTINGS = {
             "url": "https://github.com/farridav/django-jazzmin/issues",
             "new_window": True,
         },
-        {"model": "auth.user"},
+        {"model": "accounts.user"},
     ],
     #############
     # Side Menu #
