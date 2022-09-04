@@ -161,4 +161,4 @@ class AnswerCreateSerializer(srz.ModelSerializer):
                 else:
                     result -= point_per_correct_option
 
-        return result
+        return result if not result < 0 else 0
